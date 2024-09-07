@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SSB Request</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    <style>
+        .selector {
+            margin-right: 20px;
+        }
+
+        .request {
+            display: none;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <header
+        style="background-color: goldenrod; color:white; text-align: center; width: 100vw; font-size: larger; font-weight: bolder;">
+        SSB Request</header>
+    <div style="padding:25px;">
+        <div class="row">
+            <div class="col-4 form-group"><span class="form-label">Name:</span><input type="text" id="name"
+                    class="form-control"></div>
+
+            <div class="col-4 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
+                    class="form-control s2"></select></div>
+            <div class="col-4 form-group"><span class="form-label">Unit:</span><select name="unit" id="unit"
+                    class="form-control s2"></select></div>
+        </div>
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Casefile / IR :</span><input type="text"
+                    id="casefile" class="form-control"></div>
+            <div class="col-3"><br>
+                <button class="btn btn-secondary form-control" id="urgent" onclick="toggleUrgency(this)">Not urgent</button>
+            </div>
+            <div class="col-3 form-group" id="urgency_box" style="display: none;"><span class="form-label">Reason for urgency:</span><input type="text"
+                id="urgency_reason" class="form-control"></div>
+        </div>
+        <i>If additional information is required, including the casefile may facilitate finding it. <br> If your rank
+            and/or unit is not in the list, feel free to edit it from the code once you have pasted it into the
+            forums.</i>
+        <hr>
+
+        <ul style="list-style: none;">
+            <li>
+                <input type="checkbox" class="selector" data-type="DNA" onclick="checkboxRequest(this)">DNA
+            </li>
+            <div class="request row" id="divDNA">
+                <div class="col-4 form-group"><span class="form-label">DNA strings:</span><textarea id="DNA_strings"
+                        style="min-height:200px; width: 100%;"></textarea></div>
+                <div class="col-4 form-group"><span class="form-label">Victims' names:</span><br><textarea
+                        id="DNA_victims" style="min-height:200px; width: 100%;"></textarea></div>
+                <div class="col-4 form-group"><br>((Please include the names for all known victims, please remark
+                    whether
+                    are they PKs or CKs. If you have their /cdna, even better.))</div>
+            </div>
+            <li> <input type="checkbox" class="selector" data-type="Prints" onclick="checkboxRequest(this)"> Latent
+                Prints</li>
+            <div class="request row" id="divPrints">
+                <div class="col-6 form-group"><span class="form-label">OOC information:</span><textarea id="Prints_data"
+                        style="min-height:200px; width: 100%;"></textarea></div>
+                <div class="col-6 form-group"><br>((Please include the names for all the prints that would be found, no
+                    matter if they are not in the system. Describe the items to analyze, as well as their location
+                    (EL).))</div>
+            </div>
+            <li> <input type="checkbox" class="selector" data-type="Ballistics"
+                    onclick="checkboxRequest(this)">Ballistics</li>
+            <div class="request row" id="divBallistics">
+                <div class="col-6 form-group"><span class="form-label">Data:</span><textarea id="Ballistics_data"
+                        style="min-height:200px; width: 100%;"></textarea></div>
+                <div class="col-6 form-group"><br>((Please include the script matches and/or the evidence locker the
+                    firearm is in. <br> In case that bullets are to be checked, include the screenshot from the morgue
+                    screen. In case that some firearms as (#0) appear, it is likely that are from a pduty weapon, so the
+                    information will have to be admin-fetched.))</div>
+            </div>
+            <li> <input type="checkbox" class="selector" data-type="Digital" onclick="checkboxRequest(this)">Digital
+                Forensics</li>
+            <div class="request row" id="divDigital">
+                <div class="col-4 form-group"><span class="form-label">Items to be examined:</span><textarea
+                        id="Digital_Items" style="min-height:200px; width: 100%;"></textarea></div>
+                <div class="col-4 form-group"><span class="form-label">Authority for the examiation:</span><br><textarea
+                        id="Digital_Authority" style="min-height:200px; width: 100%;"></textarea></div>
+                <div class="col-4"><br>In the first column, add the EL ids and the phone numbers, if applicable. <br>In
+                    the second column, include the ESW or the reason why you believe it is not
+                    required.See <a
+                        href="https://forum.gta.world/en/topic/25404-electronic-surveillance-privacy-act-espa-act/">Electronic
+                        Surveillance & Privacy Act (ESPA ACT)
+                    </a> </div>
+            </div>
+            <li> <input type="checkbox" class="selector" data-type="Other" onclick="checkboxRequest(this)">Other</li>
+            <div class="request row" id="divOther">
+                <div class="col-6 form-group"><span class="form-label">Explain your request ((and include OOC
+                        information, if possible)):</span><textarea id="Other_data"
+                        style="min-height:200px; width: 100%;"></textarea></div>
+            </div>
+        </ul>
+
+        <!-- Submit -->
+        <div class="row">
+            <div class="col-3">
+                <button class="btn btn-success form-control" onclick="generate()">Generate</button><br><br>
+                <button class="btn btn-danger form-control" onclick="copy()">Copy</button>
+                <br><br>
+                <div class="row">
+                    <div class="col-6"><a href="https://lssd.gta.world/posting.php?mode=reply&t=21509"
+                            class="btn btn-primary form-control">LSSD</a></div>
+                    <div class="col-6"><a href="https://sadcr.gta.world/posting.php?mode=reply&t=139"
+                            class="btn btn-primary form-control">SADCR</a></div>
+                </div>
+            </div>
+            <div class="col-9">
+                <textarea id="result" style="width: 100%; min-height: 100%;" readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script>
+            const ranks = [
+                "Deputy Sheriff",
+                "Detective",
+                "Sergeant",
+                "Lieutenant",
+                "Captain",
+                "Commander"
+            ]
+
+            const units = [
+                "EXTERNAL",
+                "Detective Division, Homicide Bureau",
+                "Detective Division, Major Crimes Bureau",
+                "Detective Division, Narcotics Bureau",
+                "Detective Division, Operation Safe Streets Bureau",
+                "Internal Affairs Bureau",
+                "Davis Sheriff's Station",
+                "Davis Sheriff's Station, Gang Enforcement Team",
+                "Senora Sheriff's Station",
+                "Special Enforcement Detail",
+                "Canine Services Detail",
+                "Administrative Services Division",
+            ]
+
+            Object.entries(ranks).forEach(element => {
+                let child = document.createElement("option");
+                child.value = element[0];
+                child.innerText = element[1];
+                document.querySelector("#rank").appendChild(child);
+            });
+            Object.entries(units).forEach(element => {
+                let child = document.createElement("option");
+                child.value = element[0];
+                child.innerText = element[1];
+                document.querySelector("#unit").appendChild(child);
+            });
+
+            let requests = {};
+            function checkboxRequest(ego) {
+                $('#div' + ego.dataset.type).css("display", ego.checked ? "flex" : "none");
+                requests[ego.dataset.type] = ego.checked;
+            }
+
+            function generate() {
+                let o = "";
+                
+                if($('#urgent').hasClass("btn-danger"))
+                o += `[divbox=red][size=110][color=#FFFFFF][center][b]URGENT REQUEST:[/b][/center][/color][/size][color=#FFFFFF]${$('#urgency_reason').val()}[/color][/divbox]\n`;
+                
+                o += `[b]Name:[/b] ${$('#name').val()}\n[b]Rank: [/b] ${ranks[$('#rank').val()]}\n[b]Unit:[/b] ${units[$('#unit').val()]}\n[b]Casefile: [/b]${$('#casefile').val()}\n[hr]\n`;
+
+                if (requests["DNA"]) {
+                    o += `[b]DNA: [/b]\n[list=none][b]Strings: [/b]${$('#DNA_strings').val()}\n[b]Victims: [/b]${$('#DNA_victims').val()}[/list]`
+                }
+                if (requests["Ballistics"]) {
+                    o += `[b]Ballistics: [/b]\n[list=none]${$('#Ballistics_data').val()}[/list]`
+                }
+                if (requests["Prints"]) {
+                    o += `[b]Latent Prints: [/b]\n[list=none]${$('#Prints_data').val()}[/list]`
+                }
+                if (requests["Digital"]) {
+                    o += `[b]Digital Request: [/b]\n[list=none][b]Items: [/b]${$('#Digital_Items').val()}\n[b]Authority: [/b]${$('#Digital_Authority').val()}[/list]`
+                }
+                if (requests["Other"]) {
+                    o += `[b]Other requests: [/b]\n[list=none]${$('#Other_data').val()}[/list]`
+                }
+
+
+                $('#result').val(o);
+            }
+
+            function copy() {
+                navigator.clipboard.writeText($('#result').val()).then(
+                    () => {
+                        console.log('clipboard successfully set');
+                    },
+                    () => {
+                        console.error('clipboard write failed');
+                    }
+                );
+
+            }
+            $('.s2').select2();
+var a;
+            function toggleUrgency(btn){
+
+                if(btn.classList.contains("btn-danger")){
+                    //Pasa a no urgente
+                    btn.innerText = "Not urgent";
+                    btn.classList.remove("btn-danger");
+                    btn.classList.add("btn-secondary");
+                    $('#urgency_box').css("display", "none");
+                }
+                else {
+                    //Pasa a urgent. 
+                    btn.innerText = "Urgent";
+                    btn.classList.add("btn-danger");
+                    btn.classList.remove("btn-secondary");
+                    $('#urgency_box').css("display", "block");
+
+                }
+            }
+        </script>
+</body>
+
+</html>
