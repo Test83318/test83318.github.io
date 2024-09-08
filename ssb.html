@@ -41,10 +41,11 @@
             <div class="col-3 form-group"><span class="form-label">Casefile / IR :</span><input type="text"
                     id="casefile" class="form-control"></div>
             <div class="col-3"><br>
-                <button class="btn btn-secondary form-control" id="urgent" onclick="toggleUrgency(this)">Not urgent</button>
+                <button class="btn btn-secondary form-control" id="urgent" onclick="toggleUrgency(this)">Not
+                    urgent</button>
             </div>
-            <div class="col-3 form-group" id="urgency_box" style="display: none;"><span class="form-label">Reason for urgency:</span><input type="text"
-                id="urgency_reason" class="form-control"></div>
+            <div class="col-3 form-group" id="urgency_box" style="display: none;"><span class="form-label">Reason for
+                    urgency:</span><input type="text" id="urgency_reason" class="form-control"></div>
         </div>
         <i>If additional information is required, including the casefile may facilitate finding it. <br> If your rank
             and/or unit is not in the list, feel free to edit it from the code once you have pasted it into the
@@ -55,52 +56,80 @@
             <li>
                 <input type="checkbox" class="selector" data-type="DNA" onclick="checkboxRequest(this)">DNA
             </li>
-            <div class="request row" id="divDNA">
-                <div class="col-4 form-group"><span class="form-label">DNA strings:</span><textarea id="DNA_strings"
-                        style="min-height:200px; width: 100%;"></textarea></div>
-                <div class="col-4 form-group"><span class="form-label">Victims' names:</span><br><textarea
-                        id="DNA_victims" style="min-height:200px; width: 100%;"></textarea></div>
-                <div class="col-4 form-group"><br>((Please include the names for all known victims, please remark
-                    whether
-                    are they PKs or CKs. If you have their /cdna, even better.))</div>
+            <div class="request" id="divDNA">
+                <div class="row">
+                    <div class="col-4 form-group"><span class="form-label">DNA strings:</span><textarea
+                            class="form-control" id="DNA_strings" style="min-height:200px; width: 100%;"></textarea>
+                    </div>
+                    <div class="col-4 form-group"><span class="form-label">Victims' names:</span><br><textarea
+                            class="form-control" id="DNA_victims" style="min-height:200px; width: 100%;"></textarea>
+                    </div>
+                    <div class="col-4 form-group"><br>((Please include the names for all known victims, please remark
+                        whether
+                        are they PKs or CKs. If you have their /cdna, even better.))</div>
+                </div>
             </div>
             <li> <input type="checkbox" class="selector" data-type="Prints" onclick="checkboxRequest(this)"> Latent
                 Prints</li>
-            <div class="request row" id="divPrints">
-                <div class="col-6 form-group"><span class="form-label">OOC information:</span><textarea id="Prints_data"
-                        style="min-height:200px; width: 100%;"></textarea></div>
-                <div class="col-6 form-group"><br>((Please include the names for all the prints that would be found, no
-                    matter if they are not in the system. Describe the items to analyze, as well as their location
-                    (EL).))</div>
+            <div class="request" id="divPrints">
+                <div class="row">
+                    <div class="col-6 form-group"><span class="form-label">OOC information:</span><textarea
+                            class="form-control" id="Prints_data" style="min-height:200px; width: 100%;"></textarea>
+                    </div>
+                    <div class="col-6 form-group"><br>((Please include the names for all the prints that would be found,
+                        no
+                        matter if they are not in the system. Describe the items to analyze, as well as their location
+                        (EL).))</div>
+                </div>
             </div>
             <li> <input type="checkbox" class="selector" data-type="Ballistics"
                     onclick="checkboxRequest(this)">Ballistics</li>
-            <div class="request row" id="divBallistics">
-                <div class="col-6 form-group"><span class="form-label">Data:</span><textarea id="Ballistics_data"
-                        style="min-height:200px; width: 100%;"></textarea></div>
-                <div class="col-6 form-group"><br>((Please include the script matches and/or the evidence locker the
-                    firearm is in. <br> In case that bullets are to be checked, include the screenshot from the morgue
-                    screen. In case that some firearms as (#0) appear, it is likely that are from a pduty weapon, so the
-                    information will have to be admin-fetched.))</div>
+            <div class="request" id="divBallistics">
+                <div class="row">
+                    <div class="col-6 form-group"><span class="form-label">Data:</span><textarea id="Ballistics_data"
+                            class="form-control" style="min-height:200px; width: 100%;"></textarea></div>
+                    <div class="col-6 form-group"><br>((Please include the script matches and/or the evidence locker the
+                        firearm is in. <br> In case that bullets are to be checked, include the screenshot from the
+                        morgue
+                        screen. In case that some firearms as (#0) appear, it is likely that are from a pduty weapon, so
+                        the
+                        information will have to be admin-fetched.))</div>
+                </div>
             </div>
             <li> <input type="checkbox" class="selector" data-type="Digital" onclick="checkboxRequest(this)">Digital
                 Forensics</li>
-            <div class="request row" id="divDigital">
-                <div class="col-4 form-group"><span class="form-label">Items to be examined:</span><textarea
-                        id="Digital_Items" style="min-height:200px; width: 100%;"></textarea></div>
-                <div class="col-4 form-group"><span class="form-label">Authority for the examiation:</span><br><textarea
-                        id="Digital_Authority" style="min-height:200px; width: 100%;"></textarea></div>
-                <div class="col-4"><br>In the first column, add the EL ids and the phone numbers, if applicable. <br>In
-                    the second column, include the ESW or the reason why you believe it is not
-                    required.See <a
-                        href="https://forum.gta.world/en/topic/25404-electronic-surveillance-privacy-act-espa-act/">Electronic
-                        Surveillance & Privacy Act (ESPA ACT)
-                    </a> </div>
+            <div class="request" id="divDigital">
+                <div class="row">
+                    <div class="col-4"><span class="form-label">What the device is?</span>
+                        <textarea id="Digital_Items" class="form-control"
+                            style="min-height:100px; width: 100%;"></textarea>
+                        <div class="form-group"><span class="form-label">What are you looking for? Where is
+                                it?</span><br><textarea id="Digital_Target" class="form-control"
+                                style="min-height:200px; width: 100%;"></textarea></div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group"><span class="form-label">Warrant number: </span><input type="number"
+                                name="" class="form-control" placeholder="ESW-XXXX (just write XXXX)" id="Digital_ESW">
+                        </div>
+                        <div class="form-group"><span class="form-label">Authority for the
+                                examiation:</span><br><textarea id="Digital_Authority" class="form-control"
+                                style="min-height:150px; width: 100%;"></textarea></div>
+                    </div>
+                    <div class="col-4" style="text-align: justify;">Add the EL ids and the phone numbers, if applicable. <br>In
+                        the second column, include the ESW id and any additional information.
+                        An electronic surveillance warrant (ESW) is required before any piece of digital forensics work can be undertaken unless exceptional situations. When you request the warrant, be sure to include what the device is, what are you looking for and where could it be found. 
+                        </a><br><br>
+                        <i>If your case is particularly complex or you have more than 3 electronic devices to be read,
+                            personnel should contact TSD: SSB Command to arrange a meeting on the best way to obtain the
+                            digital evidence required.
+                        </i>
+                    </div>
+                </div>
             </div>
             <li> <input type="checkbox" class="selector" data-type="Other" onclick="checkboxRequest(this)">Other</li>
             <div class="request row" id="divOther">
                 <div class="col-6 form-group"><span class="form-label">Explain your request ((and include OOC
-                        information, if possible)):</span><textarea id="Other_data"
+                        information, if possible)):</span><textarea id="Other_data" class="form-control"
                         style="min-height:200px; width: 100%;"></textarea></div>
             </div>
         </ul>
@@ -119,7 +148,7 @@
                 </div>
             </div>
             <div class="col-9">
-                <textarea id="result" style="width: 100%; min-height: 100%;" readonly></textarea>
+                <textarea id="result" class="form-control" style="width: 100%; min-height: 100%;" readonly></textarea>
             </div>
         </div>
 
@@ -169,16 +198,16 @@
 
             let requests = {};
             function checkboxRequest(ego) {
-                $('#div' + ego.dataset.type).css("display", ego.checked ? "flex" : "none");
+                $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
                 requests[ego.dataset.type] = ego.checked;
             }
 
             function generate() {
                 let o = "";
-                
-                if($('#urgent').hasClass("btn-danger"))
-                o += `[divbox=red][size=110][color=#FFFFFF][center][b]URGENT REQUEST:[/b][/center][/color][/size][color=#FFFFFF]${$('#urgency_reason').val()}[/color][/divbox]\n`;
-                
+
+                if ($('#urgent').hasClass("btn-danger"))
+                    o += `[divbox=red][size=110][color=#FFFFFF][center][b]URGENT REQUEST:[/b][/center][/color][/size][color=#FFFFFF]${$('#urgency_reason').val()}[/color][/divbox]\n`;
+
                 o += `[b]Name:[/b] ${$('#name').val()}\n[b]Rank: [/b] ${ranks[$('#rank').val()]}\n[b]Unit:[/b] ${units[$('#unit').val()]}\n[b]Casefile: [/b]${$('#casefile').val()}\n[hr]\n`;
 
                 if (requests["DNA"]) {
@@ -191,7 +220,10 @@
                     o += `[b]Latent Prints: [/b]\n[list=none]${$('#Prints_data').val()}[/list]`
                 }
                 if (requests["Digital"]) {
-                    o += `[b]Digital Request: [/b]\n[list=none][b]Items: [/b]${$('#Digital_Items').val()}\n[b]Authority: [/b]${$('#Digital_Authority').val()}[/list]`
+                    let ESW = "";
+                    if ($('#Digital_ESW').val() != "")
+                        ESW = `[url=https://mdc.gta.world/warrant/${$('#Digital_ESW').val()}]ACCESS - ESW-${$('#Digital_ESW').val()}[/url] \n`;
+                    o += `[b]Digital Request: [/b]\n[list=none][b]Items: [/b]${$('#Digital_Items').val()}\n[b]Authority: [/b] ${ESW}${$('#Digital_Authority').val()}\n[b]Target: [/b]${$('#Digital_Target').val()}[/list]`
                 }
                 if (requests["Other"]) {
                     o += `[b]Other requests: [/b]\n[list=none]${$('#Other_data').val()}[/list]`
@@ -213,10 +245,10 @@
 
             }
             $('.s2').select2();
-var a;
-            function toggleUrgency(btn){
+            var a;
+            function toggleUrgency(btn) {
 
-                if(btn.classList.contains("btn-danger")){
+                if (btn.classList.contains("btn-danger")) {
                     //Pasa a no urgente
                     btn.innerText = "Not urgent";
                     btn.classList.remove("btn-danger");
