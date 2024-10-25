@@ -29,13 +29,17 @@
         SSB Request</header>
     <div style="padding:25px;">
         <div class="row">
-            <div class="col-4 form-group"><span class="form-label">Name:</span><input type="text" id="name"
+            <div class="col-3 form-group"><span class="form-label">Name:</span><input type="text" id="name"
                     class="form-control"></div>
 
-            <div class="col-4 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
+            <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
                     class="form-control s2"></select></div>
-            <div class="col-4 form-group"><span class="form-label">Unit:</span><select name="unit" id="unit"
+            <div class="col-3 form-group"><span class="form-label">Unit:</span><select name="unit" id="unit"
                     class="form-control s2"></select></div>
+
+            <div class="col-3"><br>
+                <button class="btn btn-secondary form-control" id="postas" onclick="togglePostAs(this)">Without postas</button>
+            </div>
         </div>
         <div class="row">
             <div class="col-3 form-group"><span class="form-label">Casefile / IR :</span><input type="text"
@@ -58,11 +62,11 @@
             </li>
             <div class="request" id="divDNA">
                 <div class="row">
-                    <div class="col-4 form-group"><span class="form-label">DNA strings:</span><textarea
-                            class="form-control" id="DNA_strings" style="min-height:200px; width: 100%;"></textarea>
+                    <div class="col-4 form-group"><span class="form-label">DNA strings:</span>
+                        <textarea class="form-control" id="DNA_strings" style="min-height:200px; width: 100%;"></textarea>
                     </div>
-                    <div class="col-4 form-group"><span class="form-label">Victims' names:</span><br><textarea
-                            class="form-control" id="DNA_victims" style="min-height:200px; width: 100%;"></textarea>
+                    <div class="col-4 form-group"><span class="form-label">Victims' names:</span><br>
+                        <textarea class="form-control" id="DNA_victims" style="min-height:200px; width: 100%;"></textarea>
                     </div>
                     <div class="col-4 form-group"><br>((Please include the names for all known victims, please remark
                         whether
@@ -73,8 +77,8 @@
                 Prints</li>
             <div class="request" id="divPrints">
                 <div class="row">
-                    <div class="col-6 form-group"><span class="form-label">OOC information:</span><textarea
-                            class="form-control" id="Prints_data" style="min-height:200px; width: 100%;"></textarea>
+                    <div class="col-6 form-group"><span class="form-label">OOC information:</span>
+                        <textarea class="form-control" id="Prints_data" style="min-height:200px; width: 100%;"></textarea>
                     </div>
                     <div class="col-6 form-group"><br>((Please include the names for all the prints that would be found,
                         no
@@ -86,8 +90,9 @@
                     onclick="checkboxRequest(this)">Ballistics</li>
             <div class="request" id="divBallistics">
                 <div class="row">
-                    <div class="col-6 form-group"><span class="form-label">Data:</span><textarea id="Ballistics_data"
-                            class="form-control" style="min-height:200px; width: 100%;"></textarea></div>
+                    <div class="col-6 form-group"><span class="form-label">Data:</span>
+                        <textarea id="Ballistics_data" class="form-control" style="min-height:200px; width: 100%;"></textarea>
+                    </div>
                     <div class="col-6 form-group"><br>((Please include the script matches and/or the evidence locker the
                         firearm is in. <br> In case that bullets are to be checked, include the screenshot from the
                         morgue
@@ -101,23 +106,28 @@
             <div class="request" id="divDigital">
                 <div class="row">
                     <div class="col-4"><span class="form-label">What the device is?</span>
-                        <textarea id="Digital_Items" class="form-control"
-                            style="min-height:100px; width: 100%;"></textarea>
+                        <textarea id="Digital_Items" class="form-control" style="min-height:100px; width: 100%;"></textarea>
                         <div class="form-group"><span class="form-label">What are you looking for? Where is
-                                it?</span><br><textarea id="Digital_Target" class="form-control"
-                                style="min-height:200px; width: 100%;"></textarea></div>
+                                it?</span><br>
+                            <textarea id="Digital_Target" class="form-control" style="min-height:200px; width: 100%;"></textarea>
+                        </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group"><span class="form-label">Warrant number: </span><input type="number"
-                                name="" class="form-control" placeholder="ESW-XXXX (just write XXXX)" id="Digital_ESW">
+                                name="" class="form-control" placeholder="ESW-XXXX (just write XXXX)"
+                                id="Digital_ESW">
                         </div>
                         <div class="form-group"><span class="form-label">Authority for the
-                                examiation:</span><br><textarea id="Digital_Authority" class="form-control"
-                                style="min-height:150px; width: 100%;"></textarea></div>
+                                examiation:</span><br>
+                            <textarea id="Digital_Authority" class="form-control" style="min-height:150px; width: 100%;"></textarea>
+                        </div>
                     </div>
-                    <div class="col-4" style="text-align: justify;">Add the EL ids and the phone numbers, if applicable. <br>In
+                    <div class="col-4" style="text-align: justify;">Add the EL ids and the phone numbers, if
+                        applicable. <br>In
                         the second column, include the ESW id and any additional information.
-                        An electronic surveillance warrant (ESW) is required before any piece of digital forensics work can be undertaken unless exceptional situations. When you request the warrant, be sure to include what the device is, what are you looking for and where could it be found. 
+                        An electronic surveillance warrant (ESW) is required before any piece of digital forensics work
+                        can be undertaken unless exceptional situations. When you request the warrant, be sure to
+                        include what the device is, what are you looking for and where could it be found.
                         </a><br><br>
                         <i>If your case is particularly complex or you have more than 3 electronic devices to be read,
                             personnel should contact TSD: SSB Command to arrange a meeting on the best way to obtain the
@@ -126,11 +136,13 @@
                     </div>
                 </div>
             </div>
-            <li> <input type="checkbox" class="selector" data-type="Other" onclick="checkboxRequest(this)">Other</li>
+            <li> <input type="checkbox" class="selector" data-type="Other" onclick="checkboxRequest(this)">Other
+            </li>
             <div class="request row" id="divOther">
                 <div class="col-6 form-group"><span class="form-label">Explain your request ((and include OOC
-                        information, if possible)):</span><textarea id="Other_data" class="form-control"
-                        style="min-height:200px; width: 100%;"></textarea></div>
+                        information, if possible)):</span>
+                    <textarea id="Other_data" class="form-control" style="min-height:200px; width: 100%;"></textarea>
+                </div>
             </div>
         </ul>
 
@@ -160,12 +172,12 @@
 
         <script>
             const ranks = [
-                "Deputy Sheriff",
-                "Detective",
-                "Sergeant",
-                "Lieutenant",
-                "Captain",
-                "Commander"
+                ["Deputy Sheriff", "DS"],
+                ["Detective", "B1"],
+                ["Sergeant", "SGT"],
+                ["Lieutenant", "LT"],
+                ["Captain", "CPT"],
+                ["Commander", "CMDR"]
             ]
 
             const units = [
@@ -186,7 +198,7 @@
             Object.entries(ranks).forEach(element => {
                 let child = document.createElement("option");
                 child.value = element[0];
-                child.innerText = element[1];
+                child.innerText = element[1][0];
                 document.querySelector("#rank").appendChild(child);
             });
             Object.entries(units).forEach(element => {
@@ -197,6 +209,7 @@
             });
 
             let requests = {};
+
             function checkboxRequest(ego) {
                 $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
                 requests[ego.dataset.type] = ego.checked;
@@ -205,10 +218,17 @@
             function generate() {
                 let o = "";
 
-                if ($('#urgent').hasClass("btn-danger"))
-                    o += `[divbox=red][size=110][color=#FFFFFF][center][b]URGENT REQUEST:[/b][/center][/color][/size][color=#FFFFFF]${$('#urgency_reason').val()}[/color][/divbox]\n`;
 
-                o += `[b]Name:[/b] ${$('#name').val()}\n[b]Rank: [/b] ${ranks[$('#rank').val()]}\n[b]Unit:[/b] ${units[$('#unit').val()]}\n[b]Casefile: [/b]${$('#casefile').val()}\n[hr]\n`;
+
+                if ($('#postas').hasClass("btn-success"))
+                o += `[postas=${$('#name').val()},${ranks[$('#rank').val()[0]][1]}]`;
+
+                if ($('#urgent').hasClass("btn-danger"))
+                    o +=
+                    `[divbox=red][size=110][color=#FFFFFF][center][b]URGENT REQUEST:[/b][/center][/color][/size][color=#FFFFFF]${$('#urgency_reason').val()}[/color][/divbox]\n`;
+
+                o +=
+                `[b]Name:[/b] ${$('#name').val()}\n[b]Rank: [/b] ${ranks[$('#rank').val()[0]][0]}\n[b]Unit:[/b] ${units[$('#unit').val()]}\n[b]Casefile: [/b]${$('#casefile').val()}\n[hr]\n`;
 
                 if (requests["DNA"]) {
                     o += `[b]DNA: [/b]\n[list=none][b]Strings: [/b]${$('#DNA_strings').val()}\n[b]Victims: [/b]${$('#DNA_victims').val()}[/list]`
@@ -222,7 +242,8 @@
                 if (requests["Digital"]) {
                     let ESW = "";
                     if ($('#Digital_ESW').val() != "")
-                        ESW = `[url=https://mdc.gta.world/warrant/${$('#Digital_ESW').val()}]ACCESS - ESW-${$('#Digital_ESW').val()}[/url] \n`;
+                        ESW =
+                        `[url=https://mdc.gta.world/warrant/${$('#Digital_ESW').val()}]ACCESS - ESW-${$('#Digital_ESW').val()}[/url] \n`;
                     o += `[b]Digital Request: [/b]\n[list=none][b]Items: [/b]${$('#Digital_Items').val()}\n[b]Authority: [/b] ${ESW}${$('#Digital_Authority').val()}\n[b]Target: [/b]${$('#Digital_Target').val()}[/list]`
                 }
                 if (requests["Other"]) {
@@ -246,6 +267,7 @@
             }
             $('.s2').select2();
             var a;
+
             function toggleUrgency(btn) {
 
                 if (btn.classList.contains("btn-danger")) {
@@ -254,13 +276,28 @@
                     btn.classList.remove("btn-danger");
                     btn.classList.add("btn-secondary");
                     $('#urgency_box').css("display", "none");
-                }
-                else {
+                } else {
                     //Pasa a urgent. 
                     btn.innerText = "Urgent";
                     btn.classList.add("btn-danger");
                     btn.classList.remove("btn-secondary");
                     $('#urgency_box').css("display", "block");
+
+                }
+            }
+
+            function togglePostAs(btn) {
+
+                if (btn.classList.contains("btn-success")) {
+                    //Pasa a no urgente
+                    btn.innerText = "Without postas";
+                    btn.classList.remove("btn-success");
+                    btn.classList.add("btn-secondary");
+                } else {
+                    //Pasa a urgent. 
+                    btn.innerText = "With postas";
+                    btn.classList.add("btn-success");
+                    btn.classList.remove("btn-secondary");
 
                 }
             }
