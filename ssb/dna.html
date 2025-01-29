@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>DNA Profiling Report</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    <style>
+        .selector {
+            margin-right: 20px;
+        }
+
+        .request {
+            display: none;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <header
+        style="background-color: goldenrod; color:white; text-align: center; width: 100vw; font-size: larger; font-weight: bolder;">
+        DNA Profiling Report</header>
+    <div style="padding:25px;">
+        <h6>Investigator: </h6>
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Name:</span><input type="text" id="LEOname"
+                    class="form-control"></div>
+
+            <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="LEOrank"
+                    class="form-control s2"></select></div>
+            <div class="col-3 form-group"><span class="form-label">Unit:</span><select name="unit" id="LEOunit"
+                    class="form-control s2"></select></div>
+        </div>
+        <h6>Analyst: </h6>
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Name:</span><input type="text" id="CSIname"
+                    class="form-control"></div>
+
+            <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="CSIrank"
+                    class="form-control s2"></select></div>
+
+            <div class="col-3"><br>
+                <button class="btn btn-secondary form-control" id="postas" onclick="togglePostAs(this)">Without postas</button>
+            </div>
+        </div>
+        <i>If ranks and/or units are not in the list, feel free to edit it from the code once you have pasted it into the
+            forums.</i>
+        <hr>
+
+
+        <!-- Submit -->
+        <div class="row">
+            <div class="col-3">
+                <button class="btn btn-success form-control" onclick="generate()">Generate</button><br><br>
+                <button class="btn btn-danger form-control" onclick="copy()">Copy</button>
+                <br><br>
+                <div class="row">
+                    <div class="col-12"><a href="https://lssd.gta.world/viewforum.php?f=1064"
+                            class="btn btn-primary form-control">Forum</a></div>
+                </div>
+            </div>
+            <div class="col-9">
+                <textarea id="result" class="form-control" style="width: 100%; min-height: 100%;" readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script src="constants.js"></script>
+        <script>
+            Object.entries(LEOranks).forEach(element => {
+                let child = document.createElement("option");
+                child.value = element[0];
+                child.innerText = element[1][0];
+                document.querySelector("#LEOrank").appendChild(child);
+            });
+            Object.entries(LEOunits).forEach(element => {
+                let child = document.createElement("option");
+                child.value = element[0];
+                child.innerText = element[1];
+                document.querySelector("#LEOunit").appendChild(child);
+            });
+            Object.entries(CSIRanks.filter(x=>x[1])).forEach(element => {
+                let child = document.createElement("option");
+                child.value = element[0];
+                child.innerText = element[1][0];
+                document.querySelector("#CSIrank").appendChild(child);
+            });
+
+            let requests = {};
+
+            function checkboxRequest(ego) {
+                $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
+                requests[ego.dataset.type] = ego.checked;
+            }
+
+            function generate() {
+                let o = "";
+
+
+
+                if ($('#postas').hasClass("btn-success"))
+                o += `[postas=${$('#CSIname').val()},CIV]`;
+
+                o+= `[transtable=Arial][tr][transtd][size=75]Los Santos County Sheriff's Department[/size][/transtd]
+[transtd][right][size=75]Scientific Services Bureau[/size][/right][/transtd][/tr][/transtable]
+[font=Arial][center][img]https://i.imgur.com/LEWTXbL.png[/img][img]https://i.imgur.com/yyMhPkS.png[/img]
+
+
+[size=115][b]Scientific Services Bureau[/b][/size]
+[size=110][b][u]DNA Profiling Report[/u][/b][/size][/center]
+
+[b][u]Synopsis[/u][/b]
+[b]Investigator:[/b] ${LEOranks[$('#LEOrank').val()][0]} ${$('#LEOname').val()}
+[b]Unit:[/b] ${LEOunits[$('#LEOunit').val()]}
+[b]Date:[/b] ${getDate()}
+
+[b][u]Evidence Submitted for DNA Analysis[/u][/b]
+[list=1][*]E1 - Swab from John Doe's saliva
+[*]E2 - Swab from liquid blood puddle on the crime scene
+[*]E3 - [/list]
+[b][u]Examination[/u][/b]
+Amplification of extracted DNA from the above evidence was performed using the Polymerase Chain Reaction (PCR) and profiled at the following STR loci (locus abbreviations used in this report are noted in parenthesis): D3S11358 (D3), vWA, D16S539 (D16), CSF1PO (CSF), TPOX, D8S1179 (D8), D21S11 (D21), D18S51 (D18), D2S441, D19S433 (D19), TH01, FGA, D22S1045 (D22), D5S818 (D5), D13S317 (D13), D7S820 (D7), SE33, D10S1248 (D10), D1S1656 (D1), D12S391 (D12), D2S1338, Y indel (a Y insertion/deletion locus), and the sex-determining marker, Amelogenin.
+
+[b][u]Results of Profiling and Conclusion[/u][/b]
+[list=1][*]The DNA sample obtained from E1 (John Doe's saliva) is consistent with the DNA profile of Firstname Lastname. 
+[*]The DNA sample obtained from E2 (Blood on the crime scene) was not consistent with any known DNA profiles on CODIS. Due to this, no inclusionary statements can be made regarding this DNA profile.[/list]
+[b][u]Preservation of Samples[/u][/b]
+The remaining portion(s) of the above evidence and a portion of any remaining extracted DNA that may still exist are being preserved in the Hall of Justice Crime Laboratory for any additional tests that may be requested in the future.
+
+All DNA samples have been entered into CODIS.
+
+[b][u]Submitted by[/u][/b]
+${$('#CSIname').val()}, Supervising Criminalist
+Scientific Services Bureau
+[/font]
+[transtable=Arial][tr][transtd][size=75]Los Santos County Sheriff's Department[/size][/transtd]
+[transtd][right][size=75]Scientific Services Bureau[/size][/right][/transtd][/tr][/transtable]
+                `
+
+                $('#result').val(o);
+            }
+
+            function copy() {
+                navigator.clipboard.writeText($('#result').val()).then(
+                    () => {
+                        console.log('clipboard successfully set');
+                    },
+                    () => {
+                        console.error('clipboard write failed');
+                    }
+                );
+
+            }
+            $('.s2').select2();
+            var a;
+
+            function toggleUrgency(btn) {
+
+                if (btn.classList.contains("btn-danger")) {
+                    //Pasa a no urgente
+                    btn.innerText = "Not urgent";
+                    btn.classList.remove("btn-danger");
+                    btn.classList.add("btn-secondary");
+                    $('#urgency_box').css("display", "none");
+                } else {
+                    //Pasa a urgent. 
+                    btn.innerText = "Urgent";
+                    btn.classList.add("btn-danger");
+                    btn.classList.remove("btn-secondary");
+                    $('#urgency_box').css("display", "block");
+
+                }
+            }
+
+            function togglePostAs(btn) {
+
+                if (btn.classList.contains("btn-success")) {
+                    //Pasa a no urgente
+                    btn.innerText = "Without postas";
+                    btn.classList.remove("btn-success");
+                    btn.classList.add("btn-secondary");
+                } else {
+                    //Pasa a urgent. 
+                    btn.innerText = "With postas";
+                    btn.classList.add("btn-success");
+                    btn.classList.remove("btn-secondary");
+
+                }
+            }
+        </script>
+</body>
+
+</html>

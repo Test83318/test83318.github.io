@@ -169,39 +169,17 @@
             integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="constants.js"></script>
 
         <script>
-            const ranks = [
-                ["Deputy Sheriff", "DS"],
-                ["Detective", "B1"],
-                ["Sergeant", "SGT"],
-                ["Lieutenant", "LT"],
-                ["Captain", "CPT"],
-                ["Commander", "CMDR"]
-            ]
 
-            const units = [
-                "EXTERNAL",
-                "Detective Division, Homicide Bureau",
-                "Detective Division, Major Crimes Bureau",
-                "Detective Division, Narcotics Bureau",
-                "Detective Division, Operation Safe Streets Bureau",
-                "Internal Affairs Bureau",
-                "Davis Sheriff's Station",
-                "Davis Sheriff's Station, Gang Enforcement Team",
-                "Senora Sheriff's Station",
-                "Special Enforcement Detail",
-                "Canine Services Detail",
-                "Administrative Services Division",
-            ]
-
-            Object.entries(ranks).forEach(element => {
+            Object.entries(LEOranks).forEach(element => {
                 let child = document.createElement("option");
                 child.value = element[0];
                 child.innerText = element[1][0];
                 document.querySelector("#rank").appendChild(child);
             });
-            Object.entries(units).forEach(element => {
+            Object.entries(LEOunits).forEach(element => {
                 let child = document.createElement("option");
                 child.value = element[0];
                 child.innerText = element[1];
@@ -228,7 +206,7 @@
                     `[divbox=red][size=110][color=#FFFFFF][center][b]URGENT REQUEST:[/b][/center][/color][/size][color=#FFFFFF]${$('#urgency_reason').val()}[/color][/divbox]\n`;
 
                 o +=
-                `[b]Name:[/b] ${$('#name').val()}\n[b]Rank: [/b] ${ranks[$('#rank').val()[0]][0]}\n[b]Unit:[/b] ${units[$('#unit').val()]}\n[b]Casefile: [/b]${$('#casefile').val()}\n[hr]\n`;
+                `[b]Name:[/b] ${$('#name').val()}\n[b]Rank: [/b] ${LEOranks[$('#rank').val()[0]][0]}\n[b]Unit:[/b] ${LEOunits[$('#unit').val()]}\n[b]Casefile: [/b]${$('#casefile').val()}\n[hr]\n`;
 
                 if (requests["DNA"]) {
                     o += `[b]DNA: [/b]\n[list=none][b]Strings: [/b]${$('#DNA_strings').val()}\n[b]Victims: [/b]${$('#DNA_victims').val()}[/list]`
