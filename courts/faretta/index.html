@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>FARETTA WAIVER</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    <style>
+        .selector {
+            margin-right: 20px;
+        }
+
+        .request {
+            display: none;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <header
+        style="background-color: navy; color:white; text-align: center; width: 100vw; font-size: larger; font-weight: bolder;">
+        FARETTA WAIVER (WAIVER OF THE RIGHT TO AN ATTORNEY)</header>
+    <div style="padding:25px;">
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Full Name:</span><input type="text" id="name"
+                    class="form-control"></div>
+
+            <div class="col-3 form-group"><span class="form-label">Case number:</span><input type="text" id="case_number" value="##GJCR#####"
+                        class="form-control"></div>
+
+        </div>
+
+
+        <h6>I understand that the Court must make a decision as to whether I am competent (have the ability) to make an informed, knowing, and voluntary waiver of my right to counsel. To assist the Court in make this decision, I declare and represent as follows:        </h6>
+        <!-- TEMPS -->
+         <table style="width: 100%;"> 
+            <tr>
+               <td style="width: 80%;">I can read and write the English language</td>
+               <td style="width: 20%;"><button class="btn btn-secondary form-control" id="language" onclick="toggleUnderstand(this)">No</button></td> 
+            </tr>
+            <tr>
+               <td>I am XX years old</td>
+               <td><input type="number" min="0" max="120" id="age" 
+                class="form-control"></td> 
+            </tr>
+            <tr>
+               <td>I am not suffering from mental illness or disability, and I have not taken any drug, medicine, or liquor within the past 24 hours</td>
+               <td><button class="btn btn-secondary form-control" id="fitness" onclick="toggleUnderstand(this)">No</button></td> 
+            </tr>
+            <tr>
+                <td>My usual job, occupation, trade or business is</td>
+                <td><input type="text" id="occupation" 
+                 class="form-control"></td> 
+             </tr>
+            <tr>
+                <td> I have completed <i>JUNIOR HIGH SCHOOL / HIGH SCHOOL / COLLEGE / OTHER (elaborate)                </i></td>
+                <td><input type="text" id="studies" 
+                 class="form-control"></td> 
+             </tr>
+             <tr>
+                <td>I have legal training</td>
+                <td><button class="btn btn-secondary form-control" id="legal" onclick="toggleUnderstand(this)">No</button></td> 
+             </tr>
+             <tr>
+                <td>I have represented myself in another criminal case.</td>
+                <td><button class="btn btn-secondary form-control" id="previous" onclick="toggleUnderstand(this)">No</button></td> 
+             </tr>
+             <tr>
+                <td>I know the facts that must be proved before I can be found guilty</td>
+                <td><button class="btn btn-secondary form-control" id="facts" onclick="toggleUnderstand(this)">No</button></td> 
+             </tr>
+             <tr>
+                <td>I I know the legal defenses that may be raised.</td>
+                <td><button class="btn btn-secondary form-control" id="defenses" onclick="toggleUnderstand(this)">No</button></td> 
+             </tr>
+             <tr>
+                <td>I know the maximum possible punishments that are available to the Court in this matter.</td>
+                <td><button class="btn btn-secondary form-control" id="punishments" onclick="toggleUnderstand(this)">No</button></td> 
+             </tr>
+         </table>
+
+
+
+
+        <!-- Submit -->
+        <div class="row">
+            <div class="col-3">
+                <button class="btn btn-success form-control" onclick="generate()">Generate</button><br><br>
+                <button class="btn btn-danger form-control" onclick="copyHTML()">Copy</button>
+            </div>
+            <div class="col-9">
+                <div id="result" style="width: 100%; min-height: 100%;" readonly></div>
+            </div>
+        </div>
+
+        <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <script>
+            function toggleUnderstand(btn) {
+                if (btn.classList.contains("btn-success")) {
+                    //Pasa a no urgente
+                    btn.innerText = "No";
+                    btn.classList.remove("btn-success");
+                    btn.classList.add("btn-secondary");
+                } else {
+                    //Pasa a urgent. 
+                    btn.innerText = "Yes";
+                    btn.classList.add("btn-success");
+                    btn.classList.remove("btn-secondary");
+
+                }
+            }
+
+
+            let requests = {};
+
+            function checkboxRequest(ego) {
+                $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
+                requests[ego.dataset.type] = ego.checked;
+            }
+
+            async function generate() {
+                var template = await fetch("/courts/faretta/template.html");
+                var t = await template.text();
+                t = t.replaceAll("%NAME%", $('#name').val());
+                t = t.replaceAll("%NUMBER%", $('#case_number').val());
+                t = t.replaceAll("%STUDIES%", $('#studies').val());
+                t = t.replaceAll("%OCCUPATION%", $('#occupation').val());
+                t = t.replaceAll("%DATE%", getDate());
+
+                t = t.replaceAll("%AGE%", $('#age').val());
+                t = t.replaceAll("%LANGUAGE%", $('#language').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%FITNESS%", $('#fitness').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%LEGAL%", $('#legal').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%PREVIOUS%", $('#previous').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%FACTS%", $('#facts').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%DEFENSES%", $('#defenses').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%PUNISHMENTS%", $('#punishments').hasClass("btn-success")?"YES":"NO");
+                t = t.replaceAll("%NAME_UP%", $('#name').val().toUpperCase());
+                $('#result').html(t);
+            }
+
+            function copyHTML(container="#result") {
+                function listener(e) {
+                    e.clipboardData.setData("text/html", document.querySelector(container).innerHTML);
+                    e.clipboardData.setData("text/plain", document.querySelector(container).innerHTML);
+                    e.preventDefault();
+                }
+                document.addEventListener("copy", listener);
+                document.execCommand("copy");
+                document.removeEventListener("copy", listener);
+
+            }
+
+            function getDate() {
+                return new Date().toLocaleDateString('en-US', {
+                    // weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                })
+            }
+        </script>
+</body>
+
+</html>
