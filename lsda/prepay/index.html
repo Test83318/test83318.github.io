@@ -14,6 +14,10 @@
 
     <div class="row">
         <div class="col-2">
+            <div class="form-group">
+                <label for="period">Period:</label>
+                <input type="text" id="period" class="form-control">
+            </div>
             <a href="./scripts.js">SEE HERE</a>
             <button onclick="process()" class="form-control btn btn-primary">Process</button>
 
@@ -47,6 +51,7 @@
             for (const [key, value] of Object.entries(replaces)) {
                 data = data.replaceAll(key, value);
             }
+            data = data.replaceAll("[P]", document.querySelector('#period').value)
             output.value = "[" + data.substr(2) + "\"\n]";
 
 

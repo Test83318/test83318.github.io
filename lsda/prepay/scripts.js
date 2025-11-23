@@ -1,8 +1,4 @@
-// PAYMENT
 
-for await (const i of data) {
-    await Pay(i, "October13-19") 
-};
 
 //PREVIOUS 
 
@@ -72,9 +68,9 @@ function Input(message) {
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 
-function Pay(cmd, reason) {
+function Pay(cmd) {
     return new Promise(async(r) =>{
-        await Input(cmd + " "+reason)
+        await Input(cmd)
         await(delay(2000)); 
         await Input("Y");
         await(delay(2000)); 
@@ -104,3 +100,9 @@ $(".console-input input").keydown(function (event) {
         CursorToEnd()
     }
 });
+
+// PAYMENT
+
+for await (const i of data) {
+    await Pay(i) 
+};
