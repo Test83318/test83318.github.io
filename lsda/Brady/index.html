@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Brady Database Generator</title>
+
+    <link rel="stylesheet" href="/lsda/common.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/fontawesome.min.css">
+    <style>
+        .selector {
+            margin-right: 20px;
+        }
+
+        .request {
+            display: none;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <header
+        style="background-color: var(--template-color); color:var(--contrast-color); text-align: center; width: 100vw; font-size: larger; font-weight: bolder;">
+        Brady Database Generator</header>
+    <div style="padding:25px;">
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Officer's name:</span><input type="text" id="name"
+                    class="form-control"></div>
+
+            <div class="col-3 form-group"><span class="form-label">Department:</span><select name="unit" id="unit"
+                class="form-control s2"></select></div>
+    
+            <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
+                    class="form-control s2"></select></div>
+
+
+        </div>
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Reason:</span><select name="rationale" id="rationale"
+                class="form-control s2"></select></div>
+
+        </div>
+        <i>Feel free to link whatever you believe it is appropiate. <br> If your rank
+            and/or unit is not in the list, feel free to edit it from the code once you have pasted it into the
+            forums.</i>
+        <hr>
+
+        <div class="row">
+            <div class="col-12 form-group"><span class="form-label">Body:</span>
+                <textarea class="form-control" id="body" style="min-height:200px; width: 100%;" disabled>This hasn't been implemented, yet.</textarea>
+            </div>
+        </div>
+        <!-- Submit -->
+        <div class="row">
+            <div class="col-3">
+                <button class="btn btn-success form-control" onclick="generate()">Generate</button><br><br>
+                <button class="btn btn-danger form-control" onclick="copy()">Copy</button>
+                <br><br>
+                <div class="row">
+                    <div class="col-12"><a href="https://lsda.gta.world/posting.php?mode=post&f=141"
+                            class="btn btn-primary form-control">Post here</a></div>
+                </div>
+            </div>
+            <div class="col-9">
+                <textarea id="result" class="form-control" style="width: 100%; min-height: 100%;" readonly></textarea>
+            </div>
+        </div>
+
+        <!-- Including Bootstrap JS (with its jQuery dependency) so that dynamic components work -->
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+            integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="/faction_ranks.js"></script>
+
+        <script>
+
+            const rationales = [
+            "False Statements",
+            "Obstruction of Judicial Entities",
+            "Withholding Evidence",
+            "Gang Activity",
+            "Criminal Conviction",
+            "Other",
+            ];
+
+            Object.entries(faction_ranks).forEach(faction => {
+                
+                let father = document.createElement("optgroup");
+                father.label = faction[0];
+                faction[1].forEach(rank=>{
+                    let child = document.createElement("option");
+                    child.value = rank;
+                    child.innerText = rank;
+                    father.appendChild(child)
+                });
+                document.querySelector("#rank").appendChild(father);
+            });
+            Object.entries(LEOunits).forEach(element => {
+                let child = document.createElement("option");
+                child.value = element[1];
+                child.innerText = element[1];
+                document.querySelector("#unit").appendChild(child);
+            });
+            Object.entries(rationales).forEach((value) => {
+                let child = document.createElement("option");
+                child.value = value[0];
+                child.innerText = value[1];
+                document.querySelector("#rationale").appendChild(child);
+            });
+
+            let requests = {};
+
+            function checkboxRequest(ego) {
+                $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
+                requests[ego.dataset.type] = ego.checked;
+            }
+
+            function generate() {
+                let o = 
+`[divbox2=#e6f7ff]
+[divbox4=#791616][center][font=arial][size=120][color=white][b]${$('#name').val()} - Public Brady Record[/b][/color][/size][/font][/center][/divbox4]
+[center]
+[img]https://mdc.gta.world/img/persons/${$('#name').val().replace(" ", "_")}.png[/img]` +($('#unit').val() == "Civilian"?"":`[color=#e6f7ff]---[/color][imgsize=150,150]https://mdc.gta.world/img/logo/en_ls/${$('#unit').val()}.png[/imgsize]`)+`
+[/center]
+[b]Positions held: [/b]
+[list]
+[*] [${getDate()}]: ${$('#rank').val()}
+[/list]
+
+[b]Reason: [/b] ${rationales[$('#rationale').val()]}
+[b]Date: [/b] ${getDate()}
+[/divbox2]`
+
+
+
+
+                $('#result').val(o);
+            }
+
+            function copy() {
+                navigator.clipboard.writeText($('#result').val()).then(
+                    () => {
+                        console.log('clipboard successfully set');
+                    },
+                    () => {
+                        console.error('clipboard write failed');
+                    }
+                );
+
+            }
+            $('.s2').select2();
+            var a;
+
+
+            function toggleHeader(btn) {
+
+                if (btn.classList.contains("btn-secondary")) {
+                    //Pasa a no urgente
+                    btn.innerText = "Header";
+                    btn.classList.remove("btn-secondary");
+                    btn.classList.add("btn-primary");
+                } else {
+                    //Pasa a urgent. 
+                    btn.innerText = "Body";
+                    btn.classList.add("btn-secondary");
+                    btn.classList.remove("btn-primary");
+
+                }
+            }
+
+            function getDate() {
+                const d = new Date();
+                const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+                return d.getDay()+"/"+months[d.getMonth()-1]+"/"+d.getFullYear();
+            }
+        </script>
+</body>
+
+</html>
