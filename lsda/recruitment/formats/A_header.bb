@@ -1,0 +1,5 @@
+[divbox=white]
+[center][dao_header][/dao_header][/center]
+[divbox=#791616][center][font=arial][size=120][color=white][b]%PTITLE%[/b][/color][/size][/font][/center][/divbox]
+[hr][/hr]
+[b]Dear Mr./Ms. %CAND_LNAME%,[/b]

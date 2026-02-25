@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Officer and Recurrent Witness Information Tracking System</title>
+    <title>Recruitment formats Generator</title>
+
     <link rel="icon" href="/lsda/favicon.ico" type="image/x-icon"/>
 
     <link rel="stylesheet" href="/lsda/common.css">
@@ -28,35 +29,29 @@
 <body>
     <header
         style="background-color: var(--template-color); color:var(--contrast-color); text-align: center; width: 100vw; font-size: larger; font-weight: bolder;">
-        Officer and Recurrent Witness Information Tracking System</header>
+        Recruitment formats Generator</header>
     <div style="padding:25px;">
         <div class="row">
-            <div class="col-3 form-group"><span class="form-label">Officer's name:</span><input type="text" id="name"
+            <div class="col-3 form-group"><span class="form-label">Applicant's name:</span><input type="text" id="name"
                     class="form-control"></div>
 
-            <div class="col-3 form-group"><span class="form-label">Department:</span><select name="unit" id="unit"
-                class="form-control s2"></select></div>
+            <div class="col-3 form-group"><span class="form-label">Prosecutors's name:</span><input type="text" id="handler"
+                class="form-control"></div>
     
             <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
                     class="form-control s2"></select></div>
 
-            <div class="col-3"><br>
-                <button class="btn btn-primary form-control" id="header" onclick="toggleHeader(this)">Header</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3 form-group"><span class="form-label">Prosecutors's name:</span><input type="text" id="prosecutor"
-                class="form-control"></div>
 
         </div>
-        <i>Feel free to link whatever you believe it is appropiate. <br> If your rank
-            and/or unit is not in the list, feel free to edit it from the code once you have pasted it into the
-            forums.</i>
-        <hr>
+        <div class="row">
+            <div class="col-3 form-group"><span class="form-label">Format:</span><select name="format" id="format"
+                class="form-control s2"></select></div>
+
+        </div>
 
         <div class="row">
-            <div class="col-12 form-group"><span class="form-label">Body:</span>
-                <textarea class="form-control" id="body" style="min-height:200px; width: 100%;"></textarea>
+            <div class="col-12 form-group"><span class="form-label">Reasons: <i>(Place each reason on its own line. )</i></span>
+                <textarea class="form-control" id="reasons" style="min-height:200px; width: 100%;"></textarea>
             </div>
         </div>
         <!-- Submit -->
@@ -66,8 +61,6 @@
                 <button class="btn btn-danger form-control" onclick="copy()">Copy</button>
                 <br><br>
                 <div class="row">
-                    <div class="col-12"><a href="https://lsda.gta.world/posting.php?mode=post&f=140"
-                            class="btn btn-primary form-control">Post here</a></div>
                 </div>
             </div>
             <div class="col-9">
@@ -81,63 +74,56 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="/faction_ranks.js"></script>
+        <script src="/lsda/recruitment/formats.js"></script>
 
         <script>
-
-            Object.entries(faction_ranks).forEach(faction => {
-                
-                let father = document.createElement("optgroup");
-                father.label = faction[0];
-                faction[1].forEach(rank=>{
-                    let child = document.createElement("option");
-                    child.value = rank;
-                    child.innerText = rank;
-                    father.appendChild(child)
-                });
-                document.querySelector("#rank").appendChild(father);
-            });
-            Object.entries(LEOunits).forEach(element => {
+            const fRanks = faction_ranks["District Attorney's Office"];
+            Object.entries(fRanks).forEach(rank => {
                 let child = document.createElement("option");
-                child.value = element[1];
-                child.innerText = element[1];
-                document.querySelector("#unit").appendChild(child);
+                child.value = rank[0];
+                child.innerText = rank[1];
+                document.querySelector("#rank").appendChild(child);
+            });
+            Object.entries(formats).forEach((value) => {
+                let child = document.createElement("option");
+                child.value = value[0];
+                child.innerText = value[1].title;
+                document.querySelector("#format").appendChild(child);
             });
 
             let requests = {};
+
+
+            function getFormatCode(id) {
+                return new Promise(async (resolve, reject) =>  {
+                    let f = await fetch(`/lsda/recruitment/formats/${id}.bb`);
+                    resolve(f.text());
+                })
+            }
 
             function checkboxRequest(ego) {
                 $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
                 requests[ego.dataset.type] = ego.checked;
             }
 
-            function generate() {
-                let o = "";
-
-
-
-                if ($('#header').hasClass("btn-primary"))
-                o += 
-`[divbox2=#F3FCD2]
-[divbox4=#791616][center][font=arial][size=120][color=white][b]${$('#name').val()}[/b][/color][/size][/font][/center][/divbox4]
-[center]
-[img]https://mdc.gta.world/img/persons/${$('#name').val().replace(" ", "_")}.png[/img]` +($('#unit').val() == "Civilian"?"":`[color=#F3FCD2]---[/color][imgsize=150,150]https://mdc.gta.world/img/logo/en_ls/${$('#unit').val()}.png[/imgsize]`)+`
-[/center]
-[b]Positions held: [/b]
-[list]
-[*] [${getDate()}]: ${$('#rank').val()}
-[/list]
-[/divbox2]`;
-
-                o += 
-`[divbox2=white]
-[b]By: [/b] ${$('#prosecutor').val()}
-[b]Date: [/b] ${getDate()}
-[b]Content: [/b]
-${$('#body').val()}
-[/divbox2]`
-
-
-
+            async function generate() {
+                let formatId = $('#format').val();
+                let format = formats[formatId];
+                console.log(format);
+                
+                o = (await getFormatCode("A_header"))+(await getFormatCode(format.code))+(await getFormatCode("A_footer"));
+                const replaces = {
+                    "%CAND_NAME%": $('#name').val(),
+                    "%CAND_LNAME%": $('#name').val().split(" ")[1],
+                    "%HAND_NAME%": $('#handler').val(),
+                    "%HAND_RANK%": fRanks[$('#rank').val()],
+                    "%PTITLE%": format.ptitle,
+                    "%REASONS%": "[*]"+$('#reasons').val().replaceAll(`\n`, `\n[*]`)
+                };
+                Object.entries(replaces).forEach(x=> {
+                    o = o.replaceAll(x[0], x[1])
+                });
+                
 
                 $('#result').val(o);
             }

@@ -58,7 +58,10 @@ const faction_ranks = {
         "Administrator"
     ],
     "District Attorney's Office": [
-        "Deputy District Attorney",
+        "Deputy District Attorney I",
+        "Deputy District Attorney II",
+        "Deputy District Attorney III",
+        "Deputy District Attorney IV",
         "Assistant District Attorney",
         "Chief of Staff",
         "Chief Deputy District Attorney",
