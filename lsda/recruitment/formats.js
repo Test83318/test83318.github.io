@@ -17,7 +17,8 @@ const formats = [
     {
         title: "Interview acknowledged",
         code: "interview_acknowledged",
-        ptitle: "INTERVIEW AVAILABILITY ACKNOWLEDGED"
+        ptitle: "INTERVIEW AVAILABILITY ACKNOWLEDGED", 
+        defReason: "DD/MMM/YYYY - HH:MM [ooc]Server Time[/ooc]"
     },
     {
         title: "Application acceptence",

@@ -22,7 +22,9 @@
             display: none;
         }
     </style>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
 
 </head>
 
@@ -35,7 +37,7 @@
             <div class="col-3 form-group"><span class="form-label">Applicant's name:</span><input type="text" id="name"
                     class="form-control"></div>
 
-            <div class="col-3 form-group"><span class="form-label">Prosecutors's name:</span><input type="text" id="handler"
+            <div class="col-3 form-group"><span class="form-label">Prosecutors's name:</span><input type="text" id="handler" onchange="changeName()"
                 class="form-control"></div>
     
             <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
@@ -91,20 +93,16 @@
                 document.querySelector("#format").appendChild(child);
             });
 
-            let requests = {};
-
-
+            const formatCodes = {};
             function getFormatCode(id) {
                 return new Promise(async (resolve, reject) =>  {
+                    if(formatCodes[id] != undefined) return resolve(formatCodes[id]);
                     let f = await fetch(`/lsda/recruitment/formats/${id}.bb`);
-                    resolve(f.text());
+                    formatCodes[id] = await f.text();
+                    resolve(formatCodes[id]);
                 })
             }
 
-            function checkboxRequest(ego) {
-                $('#div' + ego.dataset.type).css("display", ego.checked ? "block" : "none");
-                requests[ego.dataset.type] = ego.checked;
-            }
 
             async function generate() {
                 let formatId = $('#format').val();
@@ -139,7 +137,9 @@
                 );
 
             }
-            $('.s2').select2();
+            $('.s2').select2({
+                theme: 'bootstrap-5'
+            });
             var a;
 
 
@@ -164,6 +164,34 @@
                 const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
                 return d.getDay()+"/"+months[d.getMonth()-1]+"/"+d.getFullYear();
             }
+
+            var prev = 1;
+            $('#format').on('change', function(e) {
+                let formatId = $('#format').val();
+                let format = formats[formatId];
+                if(format.defReason || (formats[prev].defReason && $('#reasons').html() == formats[prev].defReason)) {
+                    $('#reasons').html(format.defReason || "");
+                }
+
+                prev = formatId;
+                getFormatCode(format.code); //Already cache it
+            });
+
+            function changeName() {
+                localStorage.setItem("handler_name", $('#handler').val());
+            }
+            $('#rank').on('select2:select', function(e) {
+                localStorage.setItem("handler_rank", $('#rank').val());
+            });
+
+
+            if(localStorage.getItem("handler_name")) {
+                $('#handler').val(localStorage.getItem("handler_name"))
+            }
+            if(localStorage.getItem("handler_rank")) {
+                $('#rank').val(localStorage.getItem("handler_rank")).trigger('change'); 
+            }
+
         </script>
 </body>
 
