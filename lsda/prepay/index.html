@@ -75,14 +75,16 @@ Reason: Wages (${per.value})`;
 
         }
 
-        const months = ["January", "February", "March", "April"]
+        function getMonth(dat = d) {
+            return dat.toLocaleString('en', { month: 'long' });
+        }
         function autoPeriod() {
 
             wDay = d.getDay(); //Día de la semana, 0 si domingo
             if(wDay == 0) wDay = 7;
 
             day = d.getDate();
-            return months[d.getMonth()] + " " + (day-wDay) + "-" + (day + wDay-7);
+            return getMonth() + " " + (day-wDay) + "-" + (day + wDay-7); //-5/02/20xx, check it.
             // De momento así
         }
 
@@ -90,7 +92,7 @@ Reason: Wages (${per.value})`;
         function download() {
             var hidden = document.createElement('a');
             hidden.href = 'data:text/csv;charset=utf-8,'+encodeURI(str);
-            hidden.download = `${months[d.getMonth()]}${d.getDate()}.csv`;
+            hidden.download = `${getMonth()}${d.getDate()}.csv`;
             hidden.target = '_blank';
             hidden.click();
         }
