@@ -17,9 +17,11 @@
             <div class="form-group">
                 <label for="period">Period:</label>
                 <input type="text" id="period" class="form-control">
+                <div id="suma" style="font-weight: bold;"></div>
             </div>
             <a href="./scripts.js">SEE HERE</a>
             <button onclick="process()" class="form-control btn btn-primary">Process</button>
+            <button onclick="download()" id="download" style="display: none" class="form-control btn btn-primary">Download</button>
 
         </div>
         <div class="col-5">
@@ -37,25 +39,62 @@
     
 
     <script>
-        const replaces = {
-            "ftransfer": '",\n"ftransfer',
-            '\n\n': '\n'
-        }
+        const input = document.querySelector('#input');
+        const output = document.querySelector('#output');
+        const per = document.querySelector('#period');
+        const suma = document.querySelector('#suma');
+        const d = new Date();
+        var str = "";
 
         function process() {
-            const input = document.querySelector('#input');
-            const output = document.querySelector('#output');
-
-            var data = input.value.replaceAll(/(\r\n|\n|\r)/gm, "");
+            S = 0;
+            var data = input.value.split("\n").map(x=> {
+                y = x.split("\t");
+                if(y[0].length != '9') y[0] = '0'+y[0];
+                if(!y[1]) return null;
+                y[2] = y[2].replaceAll("[P]", per.value)
+                S += parseInt(y[1]);
+                return y
+            }).filter(x=>x).map(x=> {
+                return x.join(',')
+            }).join("\n");
+            
             console.log(data);
-            for (const [key, value] of Object.entries(replaces)) {
-                data = data.replaceAll(key, value);
-            }
-            data = data.replaceAll("[P]", document.querySelector('#period').value)
-            output.value = "[" + data.substr(2) + "\"\n]";
+            // for (const [key, value] of Object.entries(replaces)) {
+            //     data = data.replaceAll(key, value);
+            // }
+            // data = data.replaceAll("[P]", document.querySelector('#period').value)
+            output.value = "destination_routing,amount,comment\n"+data;
+            str = "destination_routing,amount,comment\n"+data;
+            document.querySelector('#download').style.display = "block"
 
+
+            suma.innerHTML = `**${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}** <br>
+Balance: -${S}<br>
+Reason: Wages (${per.value})`;
 
         }
+
+        const months = ["January", "February", "March", "April"]
+        function autoPeriod() {
+
+            wDay = d.getDay(); //Día de la semana, 0 si domingo
+            if(wDay == 0) wDay = 7;
+
+            day = d.getDate();
+            return months[d.getMonth()] + " " + (day-wDay) + "-" + (day + wDay-7);
+            // De momento así
+        }
+
+
+        function download() {
+            var hidden = document.createElement('a');
+            hidden.href = 'data:text/csv;charset=utf-8,'+encodeURI(str);
+            hidden.download = `${months[d.getMonth()]}${d.getDate()}.csv`;
+            hidden.target = '_blank';
+            hidden.click();
+        }
+        per.value = autoPeriod();
     </script>
 </body>
 
