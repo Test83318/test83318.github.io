@@ -61,6 +61,11 @@
                 <textarea class="form-control" id="body" style="min-height:200px; width: 100%;"></textarea>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12 form-group"><span class="form-label">References: <i>(Fillings, PAS, PIMS, ...)</i></span>
+                <textarea class="form-control" id="refs" style="min-height:100px; width: 100%;"></textarea>
+            </div>
+        </div>
         <!-- Submit -->
         <div class="row">
             <div class="col-3">
@@ -136,6 +141,8 @@
 [b]Date: [/b] ${getDate()}
 [b]Content: [/b]
 ${$('#body').val()}
+[b]Linked files: [/b]
+${$('#refs').val()}
 [/divbox2]`
 
 
@@ -182,6 +189,9 @@ ${$('#body').val()}
                 const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
                 return d.getDay()+"/"+months[d.getMonth()-1]+"/"+d.getFullYear();
             }
+
+            factionCharInput("#prosecutor", "lsda");
+
         </script>
 </body>
 

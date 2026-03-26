@@ -37,7 +37,7 @@
             <div class="col-3 form-group"><span class="form-label">Applicant's name:</span><input type="text" id="name"
                     class="form-control"></div>
 
-            <div class="col-3 form-group"><span class="form-label">Prosecutors's name:</span><input type="text" id="handler" onchange="changeName()"
+            <div class="col-3 form-group"><span class="form-label">Prosecutors's name:</span><input type="text" id="handler"
                 class="form-control"></div>
     
             <div class="col-3 form-group"><span class="form-label">Rank:</span><select name="rank" id="rank"
@@ -177,21 +177,15 @@
                 getFormatCode(format.code); //Already cache it
             });
 
-            function changeName() {
-                localStorage.setItem("handler_name", $('#handler').val());
-            }
             $('#rank').on('select2:select', function(e) {
                 localStorage.setItem("handler_rank", $('#rank').val());
             });
 
 
-            if(localStorage.getItem("handler_name")) {
-                $('#handler').val(localStorage.getItem("handler_name"))
-            }
             if(localStorage.getItem("handler_rank")) {
                 $('#rank').val(localStorage.getItem("handler_rank")).trigger('change'); 
             }
-
+            factionCharInput("#handler", "lsda");
         </script>
 </body>
 

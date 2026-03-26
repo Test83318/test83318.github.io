@@ -114,3 +114,20 @@ const Titles = [
     "Ms.",
     "Mrs."
 ]
+
+function getFactionCharName(fac) {
+    return localStorage.getItem(fac+"_name");
+}
+
+
+function setFactionCharName(fac, val) {
+    return localStorage.setItem(fac+"_name", val);
+}
+
+function factionCharInput(domid, fac) {
+    el = $(domid);
+    x = getFactionCharName(fac)
+    if(x) el.val(x);
+    el.on("change", (t)=>setFactionCharName(fac, t.target.value));
+
+}
