@@ -34,6 +34,14 @@
         </div>
     </div>
     <br>
+    <div class="alert alert-warning" id="repes" style="display: none;"><b>WARNING: </b>
+        The following routings are being paid more than once: 
+        <ul>
+            <li>TEST</li>
+        </ul>
+    </div>
+
+    
     <br>
 
     
@@ -43,15 +51,22 @@
         const output = document.querySelector('#output');
         const per = document.querySelector('#period');
         const suma = document.querySelector('#suma');
+        const repes = document.querySelector('#repes');
         const d = new Date();
         var str = "";
 
         function process() {
             S = 0;
+            paidRoutings = new Set();
+            repRoutings = new Set();
             var data = input.value.split("\n").map(x=> {
                 y = x.split(/\t|&/);
-                if(y[0].length != '9') y[0] = '0'+y[0];
+                /* Routing | Amount | Comment*/
                 if(!y[1]) return null;
+
+                if(y[0].length != '9') y[0] = '0'+y[0];
+                if(paidRoutings.has(y[0])) repRoutings.add(y[0]);
+                else paidRoutings.add(y[0]);
                 y[2] = y[2].replaceAll("[P]", per.value)
                 S += parseInt(y[1]);
                 return y
@@ -59,7 +74,6 @@
                 return x.join(',')
             }).join("\n");
             
-            console.log(data);
             // for (const [key, value] of Object.entries(replaces)) {
             //     data = data.replaceAll(key, value);
             // }
@@ -73,6 +87,17 @@
 Balance: -${S}<br>
 Reason: Wages (${per.value})`;
 
+
+            /*Procesar repetidos*/
+            if(repRoutings.size != 0) {
+                Array.from(repes.querySelectorAll('li')).forEach(x=> x.remove());
+                for(let item of repRoutings) {
+                    li = document.createElement('li');
+                    li.innerHTML = item;
+                    repes.querySelector('ul').appendChild(li);
+                }
+                repes.style.display = "block";
+            } else repes.style.display = "none";
         }
 
         function getMonth(dat = d) {
